@@ -1,5 +1,8 @@
 # Django settings for 'project' project.
 
+import os
+PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -10,7 +13,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
-DATABASE_NAME = 'zoo.db'             # Or path to database file if using sqlite3.
+DATABASE_NAME = os.path.join(PROJECT_PATH, 'zoo.db')  # Or path to database file if using sqlite3.
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
@@ -67,6 +70,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'project.urls'
 
 TEMPLATE_DIRS = (
+    os.path.join(PROJECT_PATH, 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -80,3 +84,5 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'project.zoo'
 )
+handler500 = 'django.views.defaults.server_error'
+

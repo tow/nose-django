@@ -27,7 +27,8 @@ A successful run should hit *11* test cases excercising :
 --- Sample test run below ---
 
 C:\dev\nosedjango\examples\project>nosetests -v --with-django --with-doctest --doctest-tests --doctest-tests
-doctest: project.zoo.models.zoo ... ok
+
+Doctest: project.zoo.models.Zoo ... ok
 Doctest: project.zoo.models.Zoo.__str__ ... ok
 Doctest: project.zoo.models.func ... ok
 This is just a stub for a regular test method ... ok
@@ -37,12 +38,15 @@ project.zoo.test_fixtures.TestFixture1.test_count ... ok
 project.zoo.test_fixtures.TestFixture2.test_count ... ok
 project.zoo.test_race.TestDBRace1.test1 ... ok
 project.zoo.test_race.TestDBRace2.test1 ... ok
-project.tests.test_views.test_view_index ... ok
+We're customizing the ROOT_URLCONF with zoo.urls, ... ok
+We're using the standard ROOT_URLCONF, so we need to ... ok
+testcase1 (project.zoo.tests.TestDjango) ... ok
+testcase2 (project.zoo.tests.TestDjango) ... ok
 
 ----------------------------------------------------------------------
-Ran 11 tests in 0.859s
+Ran 14 tests in 1.219s
 
 OK
 Destroying test database...
 
-C:\dev\nosedjango\examples\project>
+

@@ -5,8 +5,6 @@ class TestDjango(TestCase):
     def testcase1(self):
         zoo = Zoo.objects.create(name='blah')
         assert Zoo.objects.count() == 1
-        import pdb
-        pdb.set_trace()
 
     def testcase2(self):
         zoo = Zoo.objects.create(name='blah')

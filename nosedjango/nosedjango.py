@@ -114,6 +114,7 @@ class NoseDjango(Plugin):
 
         from django.core.management import call_command
         from django.core.urlresolvers import clear_url_caches
+        from django.conf import settings
         call_command('flush', verbosity=0, interactive=False)
 
         if isinstance(test, nose.case.Test) and \
@@ -122,6 +123,16 @@ class NoseDjango(Plugin):
                 # We have to use this slightly awkward syntax due to the fact
                 # that we're using *args and **kwargs together.
                 call_command('loaddata', *test.context.fixtures, **{'verbosity': 0}) 
+
+        if isinstance(test, nose.case.Test) and \
+            isinstance(test.test, nose.case.MethodTestCase) and \
+            hasattr(test.context, 'urls'):
+                # We have to use this slightly awkward syntax due to the fact
+                # that we're using *args and **kwargs together.
+                self.old_urlconf = settings.ROOT_URLCONF
+                settings.ROOT_URLCONF = self.urls
+                clear_url_caches()
+
         self.mail.outbox = []
 
     def finalize(self, result=None):
@@ -134,5 +145,11 @@ class NoseDjango(Plugin):
 
         from django.test.utils import teardown_test_environment
         from django.db import connection
+        from django.conf import settings
         connection.creation.destroy_test_db(self.old_db, verbosity=self.verbosity)   
         teardown_test_environment()
+
+        if hasattr(self, 'old_urlconf'):
+            settings.ROOT_URLCONF = self.old_urlconf
+            clear_url_caches()
+
