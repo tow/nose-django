@@ -1,3 +1,5 @@
+from django.db import models
+
 """
 Module-level doctest.
 
@@ -6,8 +8,14 @@ Module-level doctest.
     >>> 1 + 1
     2
 """
-from django.db import models
 
+def func():
+    """
+    Function-level test
+        >>> 1+3
+        4
+    """
+    pass
 # Create your models here.
 class Zoo(models.Model):
     """
@@ -36,10 +44,3 @@ class Zoo(models.Model):
         """
         return self.name
 
-def func():
-    """
-    Function-level test
-        >>> 1+3
-        4
-    """
-    pass
