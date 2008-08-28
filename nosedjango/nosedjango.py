@@ -3,10 +3,7 @@ nose plugin for easy testing of django projects and apps. Sets up a test
 database (or schema) and installs apps from test settings file before tests
 are run, and tears the test database (or schema) down after all tests are run.
 """
-__author = 'Jason Pellerin'
-__version__ = '0.1'
 
-import atexit
 import logging
 import os, sys
 import re
