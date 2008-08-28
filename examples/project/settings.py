@@ -1,4 +1,4 @@
-# Django settings for p1 project.
+# Django settings for 'project' project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -64,7 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
 )
 
-ROOT_URLCONF = 'p1.urls'
+ROOT_URLCONF = 'project.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".

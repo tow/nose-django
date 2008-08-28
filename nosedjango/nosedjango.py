@@ -113,6 +113,7 @@ class NoseDjango(Plugin):
         # no state information passed between individual tests.
 
         from django.core.management import call_command
+        from django.core.urlresolvers import clear_url_caches
         call_command('flush', verbosity=0, interactive=False)
 
         if isinstance(test, nose.case.Test) and \

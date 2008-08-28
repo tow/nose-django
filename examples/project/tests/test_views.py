@@ -1,6 +1,7 @@
-from django.http import HttpRequest
-from project.zoo import views
+from django.test.client import Client
 
 def test_view_index():
-    r = views.index(HttpRequest())
-    assert r
+    c = Client()
+    resp = c.get('/zoo/')
+    assert "Just a title" in resp.content
+    assert "foobar" in resp.content
