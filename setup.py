@@ -12,7 +12,7 @@ setup(
     install_requires='nose>=0.10',
     url = "http://www.assembla.com/spaces/nosedjango",
     license = 'GNU LGPL',
-    packages = find_packages(exclude=['tests']),
+    packages = find_packages(),
     zip_safe = False,
     include_package_data = True,
     entry_points = {

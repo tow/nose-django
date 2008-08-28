@@ -4,7 +4,6 @@ database (or schema) and installs apps from test settings file before tests
 are run, and tears the test database (or schema) down after all tests are run.
 """
 
-import logging
 import os, sys
 import re
 
@@ -16,18 +15,25 @@ import nose.case
 # the settings file
 from nose.importer import add_path
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+import re
+NT_ROOT = re.compile(r"^[a-zA-Z]:\\$")
 def get_SETTINGS_PATH():
+    '''
+    Hunt down the settings.py module by going up the FS path
+    '''
     cwd = os.getcwd()
     while cwd:
         if 'settings.py' in os.listdir(cwd):
             break
         cwd = os.path.split(cwd)[0]
-        if cwd == '/':
+        if os.name == 'nt' and NT_ROOT.match(cwd):
+            return None
+        elif cwd == '/':
             return None
     return cwd
+
 SETTINGS_PATH = get_SETTINGS_PATH()
 
-log = logging.getLogger('nose.plugins.nosedjango')
 
 class NoseDjango(Plugin):
     """
