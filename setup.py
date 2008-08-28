@@ -4,7 +4,7 @@ setup(
     name='NoseDjango',
     version='0.6',
     author='Victor Ng',
-    author_email = 'victor@monkeybean.ca',
+    author_email = 'crankycoder@gmail.com',
     description = 'nose plugin for easy testing of django projects ' \
         'and apps. Sets up a test database (or schema) and installs apps ' \
         'from test settings file before tests are run, and tears the test ' \
