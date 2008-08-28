@@ -74,7 +74,13 @@ class NoseDjango(Plugin):
         add_path(SETTINGS_PATH)
         sys.path.append(SETTINGS_PATH)
         import settings
-        settings.DEBUG = False # I have no idea why Django does this, but it does
+
+        # Some Django code paths evaluate differently
+        # between DEBUG and not DEBUG.  Example of this include the url
+        # dispatcher when 404's are hit.  Django's own test runner forces DEBUG
+        # to be off.
+        settings.DEBUG = False 
+
         from django.core import mail
         self.mail = mail
         from django.conf import settings
@@ -95,6 +101,16 @@ class NoseDjango(Plugin):
         if not SETTINGS_PATH:
             # short circuit if no settings file can be found
             return
+
+        # This is a distinctive difference between the NoseDjango
+        # test runner compared to the plain Django test runner.
+        # Django uses the standard unittest framework and resets the 
+        # database between each test *suite*.  That usually resolves
+        # into a test module.
+        #
+        # The NoseDjango test runner will reset the database between *every*
+        # test case.  This is more in the spirit of unittesting where there is
+        # no state information passed between individual tests.
 
         from django.core.management import call_command
         call_command('flush', verbosity=0, interactive=False)
