@@ -9,7 +9,7 @@ class TestStandardUrlConf(TestCase):
         '''
         c = Client()
         resp = c.get('')
-        assert resp.status_code == 500
+        assert resp.status_code == 404, "Got status %s - expecting 404" % resp.status_code
 
         c = Client()
         resp = c.get('/zoo/')
@@ -31,7 +31,7 @@ class TestCustomUrlConf(TestCase):
 
         c = Client()
         resp = c.get('/zoo/')
-        assert resp.status_code == 500
+        assert resp.status_code == 404, "Got status %s - expecting 404" % resp.status_code
 
 
 
