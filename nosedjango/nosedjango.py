@@ -95,10 +95,21 @@ class NoseDjango(Plugin):
         connection.creation.create_test_db(verbosity=self.verbosity)
 
         # exit the setup phase and let nose do it's thing
-            
+
+    def _django_enabled(self, test):
+        django_enabled_method = getattr(
+            getattr(test.test, test.test._testMethodName),
+                    self.name, False)
+        if isinstance(test.test, nose.case.MethodTestCase):
+            testclass = test.test.cls()
+        else:
+            testclass = test.test
+        django_enabled_class = getattr(testclass, self.name, False)
+        return django_enabled_method or django_enabled_class
+
     def beforeTest(self, test):
 
-        if not SETTINGS_PATH:
+        if not SETTINGS_PATH or not self._django_enabled(test):
             # short circuit if no settings file can be found
             return
 
