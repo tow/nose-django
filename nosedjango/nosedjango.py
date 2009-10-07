@@ -47,9 +47,25 @@ class NoseDjango(Plugin):
     """
     name = 'django'
 
+    def options(self, parser, env=os.environ):
+        Plugin.options(self, parser, env)
+        parser.add_option('--django-use-tags', action='store_true',
+                          dest='django_use_tags', default=False,
+                          help='Don\'t run all tests within django '
+                               'environment; only those tagged '
+                               'appropriately.')
+        parser.add_option('--django-include-tag', action='store',
+                          dest='django_include_tag',
+                          default=env.get('NOSE_DJANGO_INCLUDE_TAG', self.name),
+                          help='When django-use-tags is on, only run '
+                               'django setup for tests tagged '
+                               'with NOSE_DJANGO_INCLUDE_TAG (default is \'django\')')
+
     def configure(self, options, conf):
         Plugin.configure(self, options, conf)
         self.verbosity = conf.verbosity
+        self.django_use_tags = options.django_use_tags
+        self.django_include_tag = options.django_include_tag
 
     def begin(self):
         """Create the test database and schema, if needed, and switch the
@@ -95,14 +111,16 @@ class NoseDjango(Plugin):
         # exit the setup phase and let nose do it's thing
 
     def _django_enabled(self, test):
+        if not self.django_use_tags:
+            return True
         django_enabled_method = getattr(
             getattr(test.test, test.test._testMethodName),
-                    self.name, False)
+                    self.django_include_tag, False)
         if isinstance(test.test, nose.case.MethodTestCase):
             testclass = test.test.cls()
         else:
             testclass = test.test
-        django_enabled_class = getattr(testclass, self.name, False)
+        django_enabled_class = getattr(testclass, self.django_include_tag, False)
         return django_enabled_method or django_enabled_class
 
     def beforeTest(self, test):
