@@ -99,6 +99,7 @@ class NoseDjango(Plugin):
         self.mail = mail
         from django.conf import settings
         from django.core import management
+        from django.core.management import call_command
         from django.test.utils import setup_test_environment
         from django.db import connection
 
@@ -107,6 +108,8 @@ class NoseDjango(Plugin):
         # setup the test env for each test case
         setup_test_environment()
         connection.creation.create_test_db(verbosity=self.verbosity)
+        if 'south' in settings.INSTALLED_APPS:
+            call_command(name='migrate', verbosity=self.verbosity)
 
         # exit the setup phase and let nose do it's thing
 
