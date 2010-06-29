@@ -60,12 +60,17 @@ class NoseDjango(Plugin):
                           help='When django-use-tags is on, only run '
                                'django setup for tests tagged '
                                'with NOSE_DJANGO_INCLUDE_TAG (default is \'django\')')
+        parser.add_option('--django-clobber-test-db', action='store',
+                          dest='django_clobber_test_db',
+                          default=False,
+                          help='Use this flag to stop django complaining about overwriting existing test db')
 
     def configure(self, options, conf):
         Plugin.configure(self, options, conf)
         self.verbosity = conf.verbosity
         self.django_use_tags = options.django_use_tags
         self.django_include_tag = options.django_include_tag
+        self.django_clobber_test_db = options.django_clobber_test_db
 
     def begin(self):
         """Create the test database and schema, if needed, and switch the
@@ -107,7 +112,8 @@ class NoseDjango(Plugin):
 
         # setup the test env for each test case
         setup_test_environment()
-        connection.creation.create_test_db(verbosity=self.verbosity)
+        connection.creation.create_test_db(verbosity=self.verbosity,
+            autoclobber=self.django_clobber_test_db)
         if 'south' in settings.INSTALLED_APPS:
             call_command(name='migrate', verbosity=self.verbosity)
 
